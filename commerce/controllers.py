@@ -124,24 +124,21 @@ def delete_service(request, id: UUID4):
     return 200, {'detail': 'deleted'}
 
 
-@commerce_controller['Service'].get('Search', response={
-    200: List[ServiceOut],
-})
-def search_service(request, q: str = None,):
-    service = Services.objects.all()
-
+@commerce_controller['Service'].get('search', response={
+    200:List[ServiceOut],
+    400:MessageOut})
+def search_services(request, q: str = None):
+    srv = service.objects.all()
     if q:
-        service = service.filter(
-            Q(nameicontains=q) | Q(descriptionicontains=q)
+        srv = srv.filter(
+            Q(name__icontains=q) | Q(description__icontains=q)
+
         )
+    return srv
 
-    """if price_lte:
-        service = service.filter(discounted_pricelte=price_lte)
 
-    if price_gte:
-        service = service.filter(discounted_pricegte=price_gte)"""
 
-    return service
+
 
 #######################################
 
@@ -217,7 +214,7 @@ def delete_Images(request, id: UUID4):
 
 
 @commerce_controller['Center'].get('Center', response={
-    200: List[Center], })
+    200: List[CenterOut], })
 def list_centers(request):
     ctr = center.objects.all()
     return ctr
@@ -227,7 +224,7 @@ def list_centers(request):
     201: CenterOut,
     400: MessageOut
 })
-def create_Center(request, payload: update_Center):
+def create_Center(request, payload: Center):
     try:
         ctr = center.objects.create(**payload.dict(), )
     except:
@@ -249,32 +246,42 @@ def update_center(request, id: UUID4, payload: update_Center):
     for attr, value in payload.dict().items():
         setattr(updatectr, attr, value)
     updatectr.save()
+    return updatectr
 
 
 @commerce_controller['Center'].delete('center/{id}')
 def delete_center(request, id: UUID4):
     ctr = get_object_or_404(center, id=id)
     ctr.delete()
+    return 200, {'detail':'deleted'}
 
 
-@commerce_controller['Center'].get('Search', response={
+"""@commerce_controller['Center'].get('search', response={
+    200: List[CenterOut], })
+def search_centers(request, q: str = None):
+    ctr = center.objects.all()
+
+    if q:
+        ctr=ctr.filter(
+            Q(name__icontains=q) | Q(description__icontains=q)
+        )
+    return ctr"""
+
+
+
+
+
+"""@commerce_controller['Center'].get('Searcceh', response={
     200: List[CenterOut],
 })
 def search_center(request, q: str = None,):
-    center = Center.objects.all()
+    center = center.objects.all()
 
     if q:
         center = center.filter(
             Q(nameicontains=q) | Q(descriptionicontains=q)
         )
-
-    """if price_lte:
-        service = service.filter(discounted_pricelte=price_lte)
-
-    if price_gte:
-        service = service.filter(discounted_pricegte=price_gte)"""
-
-    return center
+"""
 
 
 ####################################################
@@ -368,36 +375,36 @@ def delete_news(request, id: UUID4):
     nws.delete()
 ##################################
 
-@commerce_controller['Center_opinions'].get('center_opinions', response={
-    200: List[Center_opinion], })
+@commerce_controller['Center_opinions'].get('Center_opinion', response={
+    200: List[Center_opinionIn], })
 def list_opinion(request):
-    opn = Center_opinion.objects.all()
+    opn = CenterOpinion.objects.all()
     return opn
 
 
-@commerce_controller['Center_opinions'].post('center_opinions', response={
+@commerce_controller['Center_opinions'].post('Center_opinion', response={
     201: Center_opinionOUT,
     400: MessageOut
 })
 def create_opinion(request, payload: Update_Center_opinion):
     try:
-        opn = Center_opinion.objects.create(**payload.dict(), )
+        opn = CenterOpinion.objects.create(**payload.dict(), )
     except:
         return 400, {'detail': 'something wrong happened!'}
 
     return 201, opn
 
 
-@commerce_controller['Center_opinions'].get('center_opinions/{id}', response={
+@commerce_controller['Center_opinions'].get('Center_opinion/{id}', response={
     200: Center_opinionOUT,
     400: MessageOut
 })
 def retrieve_opinion(request, id):
-    return get_object_or_404(Center_opinion, id=id)
+    return get_object_or_404(CenterOpinion, id=id)
 
 
 
-@commerce_controller['Center_opinions'].get('center_opinions/')
+@commerce_controller['Center_opinions'].get('Center_opinion/')
 def rate(request, r: float):
     while r>=0.0 and r<=5.0:
         return {"Rating": r}
@@ -406,36 +413,36 @@ def rate(request, r: float):
 
 ##################################
 
-@commerce_controller['Service_opinions'].get('service_opinions', response={
-    200: List[Service_opinion], })
+@commerce_controller['Service_opinions'].get('Service_opinion', response={
+    200: List[Service_opinionIn], })
 def list_opinion(request):
-    opn = Service_opinion.objects.all()
+    opn = ServiceOpinion.objects.all()
     return opn
 
 
-@commerce_controller['Service_opinions'].post('service_opinions', response={
+@commerce_controller['Service_opinions'].post('Service_opinion', response={
     201: Service_opinionOUT,
     400: MessageOut
 })
 def create_opinion(request, payload: Update_Service_opinion):
     try:
-        opn = Service_opinion.objects.create(**payload.dict(), )
+        opn = ServiceOpinion.objects.create(**payload.dict(), )
     except:
         return 400, {'detail': 'something wrong happened!'}
 
     return 201, opn
 
 
-@commerce_controller['Service_opinions'].get('service_opinions/{id}', response={
+@commerce_controller['Service_opinions'].get('Service_opinion/{id}', response={
     200: Service_opinionOUT,
     400: MessageOut
 })
 def retrieve_opinion(request, id):
-    return get_object_or_404(Service_opinion, id=id)
+    return get_object_or_404(ServiceOpinion, id=id)
 
 
 
-@commerce_controller['Service_opinions'].get('service_opinions/')
+@commerce_controller['Service_opinions'].get('Service_opinion/')
 def rate(request, r: float):
     while r>=0.0 and r<=5.0:
         return {"Rating": r}

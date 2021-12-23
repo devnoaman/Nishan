@@ -114,23 +114,23 @@ class news(Entity):
     def __str__(self):
         return self.title
 
-class Service_opinion(Entity):
-    user = models.ForeignKey(User, verbose_name='user', related_name='Service_opinions', on_delete=models.CASCADE)
+class ServiceOpinion(Entity):
+    #user = models.ForeignKey(User, verbose_name='user', related_name='ServiceOpinions', on_delete=models.CASCADE)
     description = models.TextField('description',  blank=True, null=True)
-    service = models.ForeignKey('service', related_name='Service_opinions', on_delete=models.CASCADE)
+    service = models.ForeignKey('service', related_name='ServiceOpinions', on_delete=models.CASCADE)
     time = models.TimeField('time',auto_now = False, auto_now_add = False, null=True, blank=True)
 
-    def __str__(self):
-        return str(self.user)
+    """def __str__(self):
+        return str(self.user)"""
 
-class Center_opinion(Entity):
-    user = models.ForeignKey(User, verbose_name='user', related_name='Center_opinions', on_delete=models.CASCADE)
+class CenterOpinion(Entity):
+    #user = models.ForeignKey(User, verbose_name='user', related_name='CenterOpinions', on_delete=models.CASCADE)
     description = models.TextField('description',  blank=True, null=True)
-    center = models.ForeignKey('center', related_name='Center_opinions', on_delete=models.CASCADE)
+    center = models.ForeignKey('center', related_name='CenterOpinions', on_delete=models.CASCADE)
     time = models.TimeField('time',auto_now = False, auto_now_add = False, null=True, blank=True)
 
-    def __str__(self):
-        return str(self.user)
+    """def __str__(self):
+        return str(self.user)"""
 
 class reservation(Entity):
     title = models.CharField('name',null=True, blank=True, max_length=255)

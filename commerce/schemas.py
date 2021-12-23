@@ -43,7 +43,7 @@ class notificationsOut(Schema):
 
     ###########################################
 
-class Service_opinion(Schema):
+class Service_opinionIn(Schema):
     id: UUID4
     # rating: float
     description: str
@@ -72,13 +72,11 @@ class Update_Service_opinion(Schema):
 class Image_S(Schema):
 
     id:UUID4
-    #service_id:UUID4
     image:str
 
 
 class ImageOut_S(Schema):
     id: UUID4
-   # service_id:UUID4
     image:str
 
 class update_Images_S(Schema):
@@ -103,7 +101,7 @@ class ServiceOut(Schema):
     description: str
     time: datetime.time
     Service_images:list[ImageOut_S]
-    Service_opinions:list[Update_Service_opinion]
+    ServiceOpinions:list[Service_opinionOUT]
     background_image:str
     price: float
     label: LabelOut
@@ -138,7 +136,7 @@ class update_Images_C(Schema):
 #####################################
 
 
-class Center_opinion(Schema):
+class Center_opinionIn(Schema):
     id: UUID4
     # rating: float
     description: str
@@ -176,9 +174,7 @@ class Center(Schema):
     close_days: datetime.date
     open_time: datetime.time
     close_time: datetime.time
-    services: list[ServiceOut]
-    Center_images: list[ImageOut_C]
-    Center_opinions:list[Update_Center_opinion]
+
 
 
 
@@ -188,6 +184,9 @@ class CenterOut(Schema):
     name: str
     description: str
     location: str
+    services: list[ServiceOut]
+    Center_images: list[ImageOut_C]
+    CenterOpinions:list[Center_opinionOUT]
     image: str
     open_time:  datetime.time
     close_time: datetime.time

@@ -3,7 +3,7 @@ from django.contrib import admin
 from commerce.models import (
     Product,
     Category,
-    Label, Vendor, Merchant, Item, service,center,notification,advertising, Center_image,Service_image,Service_opinion,Center_opinion,reservation,ProductImage
+    Label, Vendor, Merchant, Item, service,center,notification,advertising, Center_image,Service_image,ServiceOpinion,CenterOpinion,reservation,ProductImage
 
 )
 class InlineProductImage(admin.TabularInline):
@@ -40,5 +40,5 @@ class Center_opinionAdmin(admin.ModelAdmin):
     list_display = ('id', 'description', 'time')
 
 admin.site.register(Item, ItemAdmin)
-admin.site.register(Service_opinion,Center_opinionAdmin)
-admin.site.register(Center_opinion,Center_opinionAdmin)
+admin.site.register(ServiceOpinion,Center_opinionAdmin)
+admin.site.register(CenterOpinion,Center_opinionAdmin)
